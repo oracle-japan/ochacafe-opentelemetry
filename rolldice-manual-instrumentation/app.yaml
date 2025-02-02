@@ -1,0 +1,37 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: rolldice-manual-instrumentation
+  labels:
+    app: rolldice-manual-instrumentation
+spec:
+  type: ClusterIP
+  selector:
+    app: rolldice-manual-instrumentation
+  ports:
+    - name: tcp
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: rolldice-manual-instrumentation
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rolldice-manual-instrumentation
+  template:
+    metadata:
+      labels:
+        app: rolldice-manual-instrumentation
+        version: v1
+    spec:
+      containers:
+      - name: rolldice-manual-instrumentation
+        image: rolldice-manual-instrumentation
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
