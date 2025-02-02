@@ -51,6 +51,7 @@ public class OpenTelemetryConfiguration {
 				.setEndpoint(OTLP_GRPC_ENDPOINT)
 				.build();
 		SdkMeterProvider meterProvider = SdkMeterProvider.builder()
+				.setResource(resource)
 				.registerMetricReader(PeriodicMetricReader.builder(metricExporter)
 						.setInterval(1, TimeUnit.MINUTES).build())
 				.build();
@@ -67,7 +68,7 @@ public class OpenTelemetryConfiguration {
 	}
 
 	@Produces
-    public Meter meter(OpenTelemetry openTelemetry) {
-        return openTelemetry.getMeter("me.shukawam.rolldice");
-    }
+	public Meter meter(OpenTelemetry openTelemetry) {
+		return openTelemetry.getMeter("me.shukawam.rolldice");
+	}
 }
