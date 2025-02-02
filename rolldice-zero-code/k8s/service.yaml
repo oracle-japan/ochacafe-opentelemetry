@@ -1,0 +1,15 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: rolldice
+  labels:
+    app: rolldice
+spec:
+  type: ClusterIP
+  selector:
+    app: rolldice
+  ports:
+    - name: tcp
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
