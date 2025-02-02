@@ -28,7 +28,8 @@ public class RolldiceResource {
     @Inject
     public RolldiceResource(Tracer tracer, Meter meter) {
         this.tracer = tracer;
-        this.dicerollCounter = meter.counterBuilder("dice.roll")
+        this.dicerollCounter = meter
+                .counterBuilder("dice.roll")
                 .setDescription("Number of times the dice was rolled")
                 .setUnit("1")
                 .build();
@@ -40,7 +41,7 @@ public class RolldiceResource {
         Span span = tracer.spanBuilder("get_index").startSpan();
         try {
             int result = this.getRandomNumber(1, 6, span);
-            dicerollCounter.add(1);
+            dicerollCounter.add(1L);
             if (player.isPresent()) {
                 logger.info(String.format("%s is rolling the dice: %s", player.get(), result));
             } else {
