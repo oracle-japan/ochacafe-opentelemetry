@@ -38,7 +38,7 @@ public class RolldiceResource {
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     public String index(@QueryParam("player") Optional<String> player) {
-        Span span = tracer.spanBuilder("get_index").startSpan();
+        Span span = tracer.spanBuilder("GET /index").startSpan();
         try {
             int result = this.getRandomNumber(1, 6, span);
             dicerollCounter.add(1L);
@@ -55,25 +55,9 @@ public class RolldiceResource {
 
     private int getRandomNumber(int min, int max, Span parentSpan) {
         Context parentContext = parentSpan.storeInContext(Context.current());
-        Span span = tracer.spanBuilder("get_ramdom_number").setParent(parentContext).startSpan();
+        Span span = tracer.spanBuilder("get random number").setParent(parentContext).startSpan();
         try {
-            sleep(min, max, span);
             return ThreadLocalRandom.current().nextInt(min, max + 1);
-        } catch (Exception e) {
-            span.recordException(e);
-            logger.severe(e.getMessage());
-            throw new RuntimeException();
-        } finally {
-            span.end();
-        }
-    }
-
-    private void sleep(int min, int max, Span parentSpan) {
-        Context parentContext = parentSpan.storeInContext(Context.current());
-        Span span = tracer.spanBuilder("sleep").setParent(parentContext).startSpan();
-        try {
-            var ramdom = ThreadLocalRandom.current().nextInt(min, max + 1);
-            Thread.sleep(ramdom * 1000);
         } catch (Exception e) {
             span.recordException(e);
             logger.severe(e.getMessage());
