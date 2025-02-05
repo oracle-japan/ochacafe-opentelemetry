@@ -38,7 +38,7 @@ public class RolldiceResource {
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     public String index(@QueryParam("player") Optional<String> player) {
-        Span span = tracer.spanBuilder("GET /index").startSpan();
+        Span span = tracer.spanBuilder("GET /rolldice").startSpan();
         try {
             int result = this.getRandomNumber(1, 6, span);
             dicerollCounter.add(1L);
